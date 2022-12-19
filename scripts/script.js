@@ -20,10 +20,13 @@ async function printCryptos(data) {
             expandInfoBtn.addEventListener('click', () => {
                 if(expandInfoBtn.innerHTML === "+"){
                     printCoinInfo(data, cryptoDiv, i);
-                    expandInfoBtn.innerHTML = "-"
+                    expandInfoBtn.innerHTML = "-";
                 } else {
-                    cryptoDiv.removeChild;
-                    expandInfoBtn.innerHTML = "+"
+                    cryptoDiv.innerHTML = "";
+                    cryptoDiv.innerHTML = (i + 1) + ": " +  data[i].name + `<button id="${data[i].id}">+</button>`;
+                    const newExpandInfoBtn = document.getElementById(data[i].id);
+                    addEventListeners(data, newExpandInfoBtn);
+                    newExpandInfoBtn.innerHTML = "+"
                 }
             })
         };
@@ -54,8 +57,6 @@ async function printCoinInfo (data, cryptoDiv, i) {
         <li> Platform : ${idDataRes.asset_platform_id}</li>
         <li> Current price (USD) : ${idDataRes.market_data.current_price.usd}</li>
      </ul>`;
-
-
 
     cryptoDiv.appendChild(newDiv);
 
