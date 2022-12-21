@@ -1,4 +1,7 @@
 const contentDiv = document.getElementById("content");
+const searchDiv = document.getElementById("searchDiv")
+const searchBtn = document.getElementById("symbolInputBtn");
+const searchInput = document.getElementById("symbolInput");
 
 fetch ("https://api.coingecko.com/api/v3/coins/list")
 .then((response) => response.json())
@@ -61,3 +64,30 @@ async function printCoinInfo (data, cryptoDiv, i) {
     cryptoDiv.appendChild(newDiv);
 
 };
+
+searchBtn.addEventListener('click',async () => {
+    let newDiv = document.createElement("div")
+    newDiv.setAttribute.id = `${searchInput.value}div`;
+    newDiv.setAttribute.class = "expandedCryptoDiv";
+
+    let idDataRes = await fetch(`https://api.coingecko.com/api/v3/coins/${searchInput.value}?tickers=false&market_data=true&community_data=false&developer_data=false&sparkline=false`)
+    .then((response) => response.json())
+    .then((data) => {return data})
+    .catch((e) => console.log(e)) /* idDataRes = idData */
+
+    console.log(idDataRes);
+    console.log(idDataRes.image.large); // works
+
+    newDiv.innerHTML = 
+    `
+    <img src="${idDataRes.image.small}">
+    <ul> 
+        <li> Symbol : ${idDataRes.symbol} </li>
+        <li> CoinGecko rank : ${idDataRes.coingecko_rank} </li>
+        <li> Platform : ${idDataRes.asset_platform_id}</li>
+        <li> Current price (USD) : ${idDataRes.market_data.current_price.usd}</li>
+     </ul>`;
+
+    searchDiv.appendChild(newDiv);
+
+}); 
